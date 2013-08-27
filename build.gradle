@@ -16,8 +16,7 @@ buildscript {
 version = '1.1.2-p1'
 group = 'co.freeside'
 archivesBaseName = 'betamax'
-nexusUsername='admin'
-nexusPassword='fartbox'
+
 
 repositories {
 	mavenCentral()
@@ -85,10 +84,7 @@ modifyPom {
 }
 
 nexus {
-	sign = false
-    repositoryUrl = 'http://nexus.mobcast.co.uk/nexus/content/repositories/releases/'
-    snapshotRepositoryUrl = 'http://nexus.mobcast.co.uk/nexus/content/repositories/snapshots/'
-
+	sign = true
 }
 
 codenarc {
