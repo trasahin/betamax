@@ -21,20 +21,31 @@ abstract class RecordedMessage extends AbstractMessage implements Message {
 		}
 	}
 
-	final boolean hasBody() {
-		body
-	}
+    public final boolean hasBody() {
+        return body != null;
+    }
 
-	@Override
-	final Reader getBodyAsText() {
-		def string = body instanceof String ? body : getEncoder().decode(bodyAsBinary, charset)
-		new StringReader(string)
-	}
+    @Override
+    public final Reader getBodyAsText() {
+        String string;
+        if (hasBody())
+            string = body instanceof String ? (String)body : getEncoder().decode(getBodyAsBinary(), getCharset());
+        else
+            string = "";
 
-	final InputStream getBodyAsBinary() {
-		byte[] bytes = body instanceof String ? getEncoder().encode(body, charset) : body
-		new ByteArrayInputStream(bytes)
-	}
+        return new StringReader(string);
+    }
+
+
+    public final InputStream getBodyAsBinary() {
+        byte[] bytes;
+        if (hasBody())
+            bytes = (body instanceof String ? getEncoder().encode((String) body, getCharset()) : (byte[])body);
+        else
+            bytes = new byte[0];
+
+        return new ByteArrayInputStream(bytes);
+    }
 
 	private AbstractEncoder getEncoder() {
 		switch (getHeader(HttpHeaders.CONTENT_ENCODING)) {
